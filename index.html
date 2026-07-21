@@ -2,7 +2,6 @@
 <html lang="fa" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -24,6 +23,7 @@ type="text"
 placeholder="🔍 جستجوی فارسی یا انگلیسی..."
 class="searchBox"
 >
+
 <div class="creator">
 
 <input
@@ -116,17 +116,11 @@ placeholder="کلمه فارسی را وارد کنید..."
 
 <div class="buttons">
 
-<button class="ok">
-✅
-</button>
+<button class="ok">✅</button>
 
-<button class="delete">
-❌
-</button>
+<button class="delete">❌</button>
 
-<button class="speak">
-🔊
-</button>
+<button class="speak">🔊</button>
 
 </div>
 
@@ -135,19 +129,28 @@ placeholder="کلمه فارسی را وارد کنید..."
 </div>
 
 </template>
-  <button id="quizBtn" class="quizBtn">
+
+<button id="quizBtn" class="quizBtn">
 📝 آزمون
-  </button>
-  
-  <div id="quizModal" class="quizModal">
+</button>
+
+<div id="quizModal" class="quizModal">
 
 <div class="quizBox">
 
 <div id="quizContent">
 
-<h2>📝 آزمون</h2>
+<div id="quizStart">
 
-<p>برای شروع روی دکمه شروع بزنید.</p>
+<h2>📝 آزمون فلش کارت</h2>
+
+<p>
+در این آزمون ۱۰ سؤال به صورت تصادفی از کلمات شما پرسیده می‌شود.
+</p>
+
+<p>
+حداقل باید ۱۰ فلش کارت داشته باشید.
+</p>
 
 <button id="startQuiz">
 شروع آزمون
@@ -155,11 +158,59 @@ placeholder="کلمه فارسی را وارد کنید..."
 
 </div>
 
+<div id="quizGame" style="display:none;">
+
+<div class="quizHeader">
+
+<span id="questionNumber">
+سؤال 1 از 10
+</span>
+
+<div class="progress">
+
+<div id="progressBar"></div>
+
 </div>
 
-  </div>
+</div>
+
+<h2 id="questionText"></h2>
+
+<div id="answers">
+
+<button class="answerBtn"></button>
+<button class="answerBtn"></button>
+<button class="answerBtn"></button>
+<button class="answerBtn"></button>
+
+</div>
+
+</div>
+
+<div id="quizResult" style="display:none;">
+
+<h2>
+🎉 آزمون تمام شد
+</h2>
+
+<h3 id="scoreText"></h3>
+
+<p id="detailText"></p>
+
+<button id="finishQuiz">
+پایان آزمون
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 <script src="script.js"></script>
 
-
 </body>
+
 </html>
