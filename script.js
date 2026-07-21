@@ -289,3 +289,27 @@ quizModal.style.display="none";
 }
 
 };
+
+startQuiz.onclick=()=>{
+
+quizContent.innerHTML=`
+
+<h2>📝 آزمون</h2>
+
+<p>آزمون با موفقیت شروع شد.</p>
+
+<p>این قسمت در مرحله بعد به سوال واقعی تبدیل می‌شود.</p>
+
+<button id="closeQuiz">
+پایان آزمون
+</button>
+
+`;
+
+document.getElementById("closeQuiz").onclick=()=>{
+
+quizModal.style.display="none";
+
+};
+
+};
