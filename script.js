@@ -8,7 +8,10 @@ const myWords=document.getElementById("myWords");
 const myWordsBtn=document.getElementById("myWordsBtn");
 const backBtn=document.getElementById("backBtn");
 const filterCategory=document.getElementById("filterCategory");
-
+const quizBtn=document.getElementById("quizBtn");
+const quizModal=document.getElementById("quizModal");
+const quizContent=document.getElementById("quizContent");
+const startQuiz=document.getElementById("startQuiz");
 let data=JSON.parse(localStorage.getItem("flashcards")||"[]");
 let learned=JSON.parse(localStorage.getItem("learnedWords")||"[]");
 
@@ -263,3 +266,26 @@ backBtn.style.display="none";
 searchInput.addEventListener("input",()=>{
 render();
 });
+quizBtn.onclick=()=>{
+
+if(data.length<10){
+
+alert("برای شروع آزمون باید حداقل ۱۰ فلش کارت داشته باشید.");
+
+return;
+
+}
+
+quizModal.style.display="flex";
+
+};
+
+quizModal.onclick=e=>{
+
+if(e.target===quizModal){
+
+quizModal.style.display="none";
+
+}
+
+};
