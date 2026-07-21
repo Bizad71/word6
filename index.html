@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>فلش کارت های من</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📚 فلش کارت های من</h1>
+
+<input
+id="searchInput"
+type="text"
+placeholder="🔍 جستجوی فارسی یا انگلیسی..."
+class="searchBox"
+>
+<div class="creator">
+
+<input
+id="faWord"
+type="text"
+placeholder="کلمه فارسی را وارد کنید..."
+>
+
+<select id="category">
+
+<option value="🏠 خانه">🏠 خانه</option>
+<option value="🍔 غذا و نوشیدنی">🍔 غذا و نوشیدنی</option>
+<option value="🏥 بیمارستان">🏥 بیمارستان</option>
+<option value="🚗 حمل و نقل">🚗 حمل و نقل</option>
+<option value="👨‍👩‍👧 خانواده">👨‍👩‍👧 خانواده</option>
+<option value="👕 لباس">👕 لباس</option>
+<option value="🏫 مدرسه">🏫 مدرسه</option>
+<option value="💼 شغل">💼 شغل</option>
+<option value="🌍 سفر">🌍 سفر</option>
+<option value="🛒 خرید">🛒 خرید</option>
+<option value="🐶 حیوانات">🐶 حیوانات</option>
+<option value="🌳 طبیعت">🌳 طبیعت</option>
+<option value="❤️ بدن">❤️ بدن</option>
+<option value="⚡ افعال">⚡ افعال</option>
+<option value="⭐ سایر">⭐ سایر</option>
+
+</select>
+
+<button id="createBtn">
+ساخت فلش کارت
+</button>
+
+</div>
+
+<div id="loading" class="loading">
+در حال ساخت فلش کارت...
+</div>
+
+<div id="cards" class="cards"></div>
+
+<button id="myWordsBtn" class="myWordsBtn">
+📚 کلمات من
+</button>
+
+<button id="backBtn" class="myWordsBtn" style="display:none;">
+⬅ بازگشت
+</button>
+
+<select id="filterCategory" style="display:none;">
+
+<option value="همه">📚 همه دسته‌ها</option>
+
+<option value="🏠 خانه">🏠 خانه</option>
+<option value="🍔 غذا و نوشیدنی">🍔 غذا و نوشیدنی</option>
+<option value="🏥 بیمارستان">🏥 بیمارستان</option>
+<option value="🚗 حمل و نقل">🚗 حمل و نقل</option>
+<option value="👨‍👩‍👧 خانواده">👨‍👩‍👧 خانواده</option>
+<option value="👕 لباس">👕 لباس</option>
+<option value="🏫 مدرسه">🏫 مدرسه</option>
+<option value="💼 شغل">💼 شغل</option>
+<option value="🌍 سفر">🌍 سفر</option>
+<option value="🛒 خرید">🛒 خرید</option>
+<option value="🐶 حیوانات">🐶 حیوانات</option>
+<option value="🌳 طبیعت">🌳 طبیعت</option>
+<option value="❤️ بدن">❤️ بدن</option>
+<option value="⚡ افعال">⚡ افعال</option>
+<option value="⭐ سایر">⭐ سایر</option>
+
+</select>
+
+<div id="myWords" class="cards" style="display:none;"></div>
+
+</div>
+
+<template id="cardTemplate">
+
+<div class="card">
+
+<div class="front">
+
+<h2 class="en"></h2>
+
+</div>
+
+<div class="back">
+
+<h3 class="fa"></h3>
+
+<p class="category"></p>
+
+<div class="buttons">
+
+<button class="ok">
+✅
+</button>
+
+<button class="delete">
+❌
+</button>
+
+<button class="speak">
+🔊
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</template>
+
+<script src="script.js"></script>
+
+</body>
+</html>
