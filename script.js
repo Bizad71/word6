@@ -470,7 +470,7 @@ quizResult.style.display="none";
 
 progressBar.style.width="0%";
 
-}
+};
 
 //================ WORD GAME ================
 
@@ -673,4 +673,4 @@ fallingArea.innerHTML="";
 
 
 closeGame.onclick=endGame;
-};
+
