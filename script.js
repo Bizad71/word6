@@ -266,17 +266,45 @@ backBtn.style.display="none";
 searchInput.addEventListener("input",()=>{
 render();
 });
+
+//================== QUIZ ==================
+
+const questionNumber=document.getElementById("questionNumber");
+const questionText=document.getElementById("questionText");
+const progressBar=document.getElementById("progressBar");
+const answerBtns=document.querySelectorAll(".answerBtn");
+const quizStart=document.getElementById("quizStart");
+const quizGame=document.getElementById("quizGame");
+const quizResult=document.getElementById("quizResult");
+const scoreText=document.getElementById("scoreText");
+const detailText=document.getElementById("detailText");
+const finishQuiz=document.getElementById("finishQuiz");
+
+let quizQuestions=[];
+let currentQuestion=0;
+let score=0;
+let allWords=[];
+
 quizBtn.onclick=()=>{
 
-if(data.length<10){
+allWords=[...data,...learned];
 
-alert("برای شروع آزمون باید حداقل ۱۰ فلش کارت داشته باشید.");
+console.log("Flashcards:", data.length);
+console.log("Learned:", learned.length);
+console.log("All:", allWords.length);
+if(allWords.length<10){
+
+alert("حداقل باید ۱۰ کلمه داشته باشید.");
 
 return;
 
 }
 
 quizModal.style.display="flex";
+
+quizStart.style.display="block";
+quizGame.style.display="none";
+quizResult.style.display="none";
 
 };
 
@@ -291,82 +319,358 @@ quizModal.style.display="none";
 };
 
 startQuiz.onclick=()=>{
+console.log("Quiz questions:", quizQuestions);
+console.log("All words:", allWords);
+  
+quizQuestions=[...allWords]
+.sort(()=>Math.random()-0.5)
+.slice(0,10);
 
-quizContent.innerHTML=`
+currentQuestion=0;
+score=0;
 
-<h2>📝 آزمون</h2>
+quizStart.style.display="none";
+quizGame.style.display="block";
+quizResult.style.display="none";
+console.log("Starting quiz...");
+showQuestion();
 
-<p>آزمون با موفقیت شروع شد.</p>
+};
 
-<p>این قسمت در مرحله بعد به سوال واقعی تبدیل می‌شود.</p>
+function showQuestion(){
 
-<button id="closeQuiz">
-پایان آزمون
-</button>
+const q=quizQuestions[currentQuestion];
 
-`;
+questionNumber.textContent=
+`سؤال ${currentQuestion+1} از 10`;
 
-document.getElementById("closeQuiz").onclick=()=>{
+progressBar.style.width=
+((currentQuestion)/10*100)+"%";
+
+questionText.textContent=q.fa;
+
+let answers=[q.en];
+
+let randoms=allWords
+.filter(x=>x.id!==q.id)
+.sort(()=>Math.random()-0.5)
+.slice(0,3);
+
+randoms.forEach(x=>answers.push(x.en));
+
+answers=answers.sort(()=>Math.random()-0.5);
+
+const answerBtns=document.querySelectorAll(".answerBtn");
+
+answerBtns.forEach((btn,index)=>{
+
+btn.disabled=false;
+
+btn.style.background="#4d9b7d";
+
+btn.textContent=answers[index];
+
+btn.onclick=()=>{
+
+answerBtns.forEach(b=>b.disabled=true);
+
+if(btn.textContent===q.en){
+
+score++;
+
+btn.style.background="#22c55e";
+
+}else{
+
+btn.style.background="#ef4444";
+
+answerBtns.forEach(b=>{
+
+if(b.textContent===q.en){
+
+b.style.background="#22c55e";
+
+}
+
+});
+
+}
+
+setTimeout(nextQuestion,1000);
+
+};
+
+});
+
+}
+
+function nextQuestion(){
+
+currentQuestion++;
+
+if(currentQuestion>=10){
+
+showResult();
+
+return;
+
+}
+
+showQuestion();
+
+}
+
+function showResult(){
+
+quizGame.style.display="none";
+
+quizResult.style.display="block";
+
+progressBar.style.width="100%";
+
+scoreText.textContent=`امتیاز شما : ${score} از 10`;
+
+let msg="";
+
+if(score==10){
+
+msg="🏆 عالی بود! همه جواب‌ها درست بودند.";
+
+}else if(score>=8){
+
+msg="🌟 خیلی خوب! فقط چند اشتباه داشتی.";
+
+}else if(score>=6){
+
+msg="👍 خوب بود، کمی بیشتر تمرین کن.";
+
+}else if(score>=4){
+
+msg="📚 نیاز به تمرین بیشتری داری.";
+
+}else{
+
+msg="💪 دوباره امتحان کن، موفق میشی.";
+
+}
+
+detailText.textContent=msg;
+
+}
+
+finishQuiz.onclick=()=>{
 
 quizModal.style.display="none";
 
-};
+quizStart.style.display="block";
+
+quizGame.style.display="none";
+
+quizResult.style.display="none";
+
+progressBar.style.width="0%";
+
+}
+
+//================ WORD GAME ================
+
+const gameBtn=document.getElementById("gameBtn");
+const wordGame=document.getElementById("wordGame");
+const fallingArea=document.getElementById("fallingArea");
+const gameTarget=document.getElementById("gameTarget");
+const gameScore=document.getElementById("gameScore");
+const closeGame=document.getElementById("closeGame");
+
+
+let gameScoreNum=0;
+let targetWord=null;
+let gameTimer;
+
+
+gameBtn.onclick=()=>{
+
+let allWords=[...data,...learned];
+
+if(allWords.length<4){
+
+alert("حداقل ۴ کلمه لازم است");
+
+return;
+
+}
+
+
+wordGame.style.display="block";
+
+gameScoreNum=0;
+
+gameScore.textContent=0;
+
+startWordGame();
 
 };
 
 
-const matrix=document.getElementById("matrix");
 
-const words=[
-"Apple","Book","House","Hospital","Doctor",
-"Nurse","Water","Family","Chair","School",
-"Table","Phone","Computer","Friend","Teacher",
-"Window","Kitchen","Food","Coffee","Car"
-];
+function startWordGame(){
 
-setInterval(()=>{
+let allWords=[...data,...learned];
 
-const item=document.createElement("div");
+targetWord=
+allWords[Math.floor(Math.random()*allWords.length)];
 
-item.className="matrixWord";
 
-item.textContent=
-words[Math.floor(Math.random()*words.length)];
+gameTarget.textContent=
+"معنی: "+targetWord.fa;
 
-item.style.left=Math.random()*100+"vw";
 
-item.style.animationDuration=
-(4+Math.random()*5)+"s";
+fallingArea.innerHTML="";
 
-item.style.fontSize=
-(14+Math.random()*16)+"px";
 
-matrix.appendChild(item);
+clearInterval(gameTimer);
+
+
+gameTimer=setInterval(()=>{
+
+
+createFallingWord(allWords);
+
+
+},1200);
+
+
+}
+
+
+
+function createFallingWord(allWords){
+
+
+let correct=targetWord.en;
+
+
+let words=[correct];
+
+
+while(words.length<4){
+
+let w=
+allWords[Math.floor(Math.random()*allWords.length)].en;
+
+
+if(!words.includes(w)){
+
+words.push(w);
+
+}
+
+}
+
+
+words.sort(()=>Math.random()-0.5);
+
+
+words.forEach(word=>{
+
+
+let div=document.createElement("div");
+
+div.className="fallWord";
+
+div.textContent=word;
+
+
+div.style.left=
+Math.random()*80+"%";
+
+
+div.style.animationDuration=
+(3+Math.random()*3)+"s";
+
+
+
+div.onclick=()=>{
+
+
+if(word===correct){
+
+
+gameScoreNum++;
+
+gameScore.textContent=gameScoreNum;
+
+nextGameWord();
+
+
+}else{
+
+alert("باختی 😢 امتیاز: "+gameScoreNum);
+
+endGame();
+
+}
+
+
+};
+
+
+fallingArea.appendChild(div);
+
+
 
 setTimeout(()=>{
 
-item.remove();
+if(div.parentNode){
 
-},9000);
+if(word===correct){
 
-},250);
+alert("فرصت از دست رفت 😢");
 
-const particles=document.getElementById("particles");
-
-for(let i=0;i<40;i++){
-
-const p=document.createElement("div");
-
-p.className="particle";
-
-p.style.left=Math.random()*100+"vw";
-
-p.style.animationDuration=
-(8+Math.random()*10)+"s";
-
-p.style.animationDelay=
-Math.random()*10+"s";
-
-particles.appendChild(p);
+endGame();
 
 }
+
+div.remove();
+
+}
+
+
+},6000);
+
+
+
+});
+
+
+}
+
+
+
+function nextGameWord(){
+
+targetWord=
+[...data,...learned]
+[Math.floor(Math.random()*([...data,...learned].length))];
+
+
+gameTarget.textContent=
+"معنی: "+targetWord.fa;
+
+}
+
+
+
+function endGame(){
+
+clearInterval(gameTimer);
+
+wordGame.style.display="none";
+
+fallingArea.innerHTML="";
+
+}
+
+
+
+closeGame.onclick=endGame;
+};
