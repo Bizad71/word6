@@ -313,3 +313,60 @@ quizModal.style.display="none";
 };
 
 };
+
+
+const matrix=document.getElementById("matrix");
+
+const words=[
+"Apple","Book","House","Hospital","Doctor",
+"Nurse","Water","Family","Chair","School",
+"Table","Phone","Computer","Friend","Teacher",
+"Window","Kitchen","Food","Coffee","Car"
+];
+
+setInterval(()=>{
+
+const item=document.createElement("div");
+
+item.className="matrixWord";
+
+item.textContent=
+words[Math.floor(Math.random()*words.length)];
+
+item.style.left=Math.random()*100+"vw";
+
+item.style.animationDuration=
+(4+Math.random()*5)+"s";
+
+item.style.fontSize=
+(14+Math.random()*16)+"px";
+
+matrix.appendChild(item);
+
+setTimeout(()=>{
+
+item.remove();
+
+},9000);
+
+},250);
+
+const particles=document.getElementById("particles");
+
+for(let i=0;i<40;i++){
+
+const p=document.createElement("div");
+
+p.className="particle";
+
+p.style.left=Math.random()*100+"vw";
+
+p.style.animationDuration=
+(8+Math.random()*10)+"s";
+
+p.style.animationDelay=
+Math.random()*10+"s";
+
+particles.appendChild(p);
+
+}
