@@ -12,10 +12,8 @@
 </head>
 
 <body>
-<div id="matrix"></div>
-<div id="particles"></div>
-  
-<div class="container neon">
+
+<div class="container">
 
 <h1>📚 فلش کارت های من</h1>
 
@@ -131,7 +129,27 @@ placeholder="کلمه فارسی را وارد کنید..."
 </div>
 
 </template>
+<button id="gameBtn" class="myWordsBtn">
+🎮 بازی کلمات
+</button>
 
+
+<div id="wordGame" class="wordGame">
+
+<h2 id="gameTarget"></h2>
+
+<div id="fallingArea"></div>
+
+<h3>
+امتیاز:
+<span id="gameScore">0</span>
+</h3>
+
+<button id="closeGame">
+خروج از بازی
+</button>
+
+</div>
 <button id="quizBtn" class="quizBtn">
 📝 آزمون
 </button>
@@ -210,7 +228,7 @@ placeholder="کلمه فارسی را وارد کنید..."
 </div>
 
 </div>
-<div id="statsBar"></div>
+
 <script src="script.js"></script>
 
 </body>
