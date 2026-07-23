@@ -674,3 +674,192 @@ fallingArea.innerHTML="";
 
 closeGame.onclick=endGame;
 
+//================ BACKUP =================
+
+const backupBtn=document.getElementById("backupBtn");
+const restoreBtn=document.getElementById("restoreBtn");
+const restoreFile=document.getElementById("restoreFile");
+
+
+// گرفتن بکاپ
+backupBtn.onclick=()=>{
+
+const backup={
+
+flashcards:data,
+
+learnedWords:learned,
+
+bestScore:localStorage.getItem("bestScore")||0,
+
+language:currentLang
+
+};
+
+const blob=new Blob(
+[JSON.stringify(backup,null,2)],
+{type:"application/json"}
+);
+
+const a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="flashcards-backup.json";
+
+a.click();
+
+URL.revokeObjectURL(a.href);
+
+};
+
+
+// انتخاب فایل
+restoreBtn.onclick=()=>{
+
+restoreFile.click();
+
+};
+
+
+// بازیابی
+restoreFile.onchange=e=>{
+
+const file=e.target.files[0];
+
+if(!file)return;
+
+const reader=new FileReader();
+
+reader.onload=()=>{
+
+try{
+
+const backup=
+JSON.parse(reader.result);
+
+
+// بررسی فایل
+if(
+!backup.flashcards||
+!backup.learnedWords
+){
+
+alert("فایل معتبر نیست");
+
+return;
+
+}
+
+
+// سوال از کاربر
+const addMode=
+confirm(
+"OK = اضافه به کلمات فعلی\n\nCancel = جایگزین کامل"
+);
+
+
+if(addMode){
+
+// ---------- اضافه کردن ----------
+
+const flashMap=new Map();
+
+data.forEach(x=>{
+
+flashMap.set(
+x.fa+"|"+x.en,
+x
+);
+
+});
+
+backup.flashcards.forEach(x=>{
+
+flashMap.set(
+x.fa+"|"+x.en,
+x
+);
+
+});
+
+data=[...flashMap.values()];
+
+
+const learnedMap=new Map();
+
+learned.forEach(x=>{
+
+learnedMap.set(
+x.fa+"|"+x.en,
+x
+);
+
+});
+
+backup.learnedWords.forEach(x=>{
+
+learnedMap.set(
+x.fa+"|"+x.en,
+x
+);
+
+});
+
+learned=[...learnedMap.values()];
+
+
+}else{
+
+// ---------- جایگزین ----------
+
+data=backup.flashcards;
+
+learned=backup.learnedWords;
+
+}
+
+
+localStorage.setItem(
+"flashcards",
+JSON.stringify(data)
+);
+
+localStorage.setItem(
+"learnedWords",
+JSON.stringify(learned)
+);
+
+if(backup.bestScore){
+
+localStorage.setItem(
+"bestScore",
+backup.bestScore
+);
+
+}
+
+if(backup.language){
+
+localStorage.setItem(
+"language",
+backup.language
+);
+
+}
+
+alert("✅ بکاپ با موفقیت بازیابی شد.");
+
+location.reload();
+
+}catch{
+
+alert("❌ فایل بکاپ خراب یا نامعتبر است.");
+
+}
+
+};
+
+reader.readAsText(file);
+
+};
