@@ -690,9 +690,7 @@ flashcards:data,
 
 learnedWords:learned,
 
-bestScore:localStorage.getItem("bestScore")||0,
-
-language:currentLang
+bestScore:Number(localStorage.getItem("bestScore")||0)
 
 };
 
@@ -701,15 +699,23 @@ const blob=new Blob(
 {type:"application/json"}
 );
 
+const url=URL.createObjectURL(blob);
+
 const a=document.createElement("a");
 
-a.href=URL.createObjectURL(blob);
+a.href=url;
 
 a.download="flashcards-backup.json";
 
+document.body.appendChild(a);
+
 a.click();
 
-URL.revokeObjectURL(a.href);
+a.remove();
+
+setTimeout(()=>{
+URL.revokeObjectURL(url);
+},500);
 
 };
 
@@ -735,52 +741,30 @@ reader.onload=()=>{
 
 try{
 
-const backup=
-JSON.parse(reader.result);
+const backup=JSON.parse(reader.result);
 
+if(!backup.flashcards || !backup.learnedWords){
 
-// بررسی فایل
-if(
-!backup.flashcards||
-!backup.learnedWords
-){
-
-alert("فایل معتبر نیست");
+alert("❌ فایل معتبر نیست.");
 
 return;
 
 }
 
-
-// سوال از کاربر
-const addMode=
-confirm(
+const addMode=confirm(
 "OK = اضافه به کلمات فعلی\n\nCancel = جایگزین کامل"
 );
 
-
 if(addMode){
-
-// ---------- اضافه کردن ----------
 
 const flashMap=new Map();
 
 data.forEach(x=>{
-
-flashMap.set(
-x.fa+"|"+x.en,
-x
-);
-
+flashMap.set(x.fa+"|"+x.en,x);
 });
 
 backup.flashcards.forEach(x=>{
-
-flashMap.set(
-x.fa+"|"+x.en,
-x
-);
-
+flashMap.set(x.fa+"|"+x.en,x);
 });
 
 data=[...flashMap.values()];
@@ -789,36 +773,22 @@ data=[...flashMap.values()];
 const learnedMap=new Map();
 
 learned.forEach(x=>{
-
-learnedMap.set(
-x.fa+"|"+x.en,
-x
-);
-
+learnedMap.set(x.fa+"|"+x.en,x);
 });
 
 backup.learnedWords.forEach(x=>{
-
-learnedMap.set(
-x.fa+"|"+x.en,
-x
-);
-
+learnedMap.set(x.fa+"|"+x.en,x);
 });
 
 learned=[...learnedMap.values()];
 
-
 }else{
-
-// ---------- جایگزین ----------
 
 data=backup.flashcards;
 
 learned=backup.learnedWords;
 
 }
-
 
 localStorage.setItem(
 "flashcards",
@@ -830,7 +800,7 @@ localStorage.setItem(
 JSON.stringify(learned)
 );
 
-if(backup.bestScore){
+if(backup.bestScore!=null){
 
 localStorage.setItem(
 "bestScore",
@@ -839,20 +809,13 @@ backup.bestScore
 
 }
 
-if(backup.language){
-
-localStorage.setItem(
-"language",
-backup.language
-);
-
-}
-
 alert("✅ بکاپ با موفقیت بازیابی شد.");
 
 location.reload();
 
-}catch{
+}catch(err){
+
+console.error(err);
 
 alert("❌ فایل بکاپ خراب یا نامعتبر است.");
 
@@ -861,5 +824,7 @@ alert("❌ فایل بکاپ خراب یا نامعتبر است.");
 };
 
 reader.readAsText(file);
+
+restoreFile.value="";
 
 };
