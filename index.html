@@ -16,7 +16,35 @@
 <div class="container">
 
 <h1>📚 فلش کارت های من</h1>
+<div class="topMenu">
 
+<button id="myWordsBtn" class="menuBtn">
+📚 کلمات من
+</button>
+
+<button id="gameBtn" class="menuBtn">
+🎮 بازی
+</button>
+
+<button id="quizBtn" class="menuBtn">
+📝 آزمون
+</button>
+
+<button id="backupBtn" class="menuBtn">
+📥 بکاپ
+</button>
+
+<button id="restoreBtn" class="menuBtn">
+📤 بازیابی
+</button>
+
+<input
+type="file"
+id="restoreFile"
+accept=".json"
+style="display:none;">
+
+</div>
 <input
 id="searchInput"
 type="text"
@@ -129,11 +157,6 @@ placeholder="کلمه فارسی را وارد کنید..."
 </div>
 
 </template>
-<button id="gameBtn" class="myWordsBtn">
-🎮 بازی کلمات
-</button>
-
-
 <div id="wordGame" class="wordGame">
 
 <h2 id="gameTarget"></h2>
@@ -145,14 +168,16 @@ placeholder="کلمه فارسی را وارد کنید..."
 <span id="gameScore">0</span>
 </h3>
 
+<h3>
+🏆 رکورد:
+<span id="bestScore">0</span>
+</h3>
+
 <button id="closeGame">
 خروج از بازی
 </button>
 
 </div>
-<button id="quizBtn" class="quizBtn">
-📝 آزمون
-</button>
 
 <div id="quizModal" class="quizModal">
 
@@ -228,25 +253,7 @@ placeholder="کلمه فارسی را وارد کنید..."
 </div>
 
 </div>
-<hr>
 
-<div class="backupBox">
-
-<button id="backupBtn">
-📥 بکاپ
-</button>
-
-<button id="restoreBtn">
-📤 بازیابی
-</button>
-
-<input
-type="file"
-id="restoreFile"
-accept=".json"
-style="display:none;">
-
-</div>
 <script src="script.js"></script>
 
 </body>
